@@ -1,0 +1,15 @@
+---
+- name: Restart Sonar
+  systemd: 
+    name: sonar
+    state: restarted
+  notify: Wait for Sonar to come up
+
+- name: Wait for Sonar to come up
+  uri:
+    url: "http://localhost:{{ sonar_web_port }}"
+    status_code: 200
+  register: result
+  until: result.status == 200
+  retries: 120
+  delay: 1

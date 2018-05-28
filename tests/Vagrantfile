@@ -1,0 +1,16 @@
+VAGRANT_API_VERSION = 2
+
+Vagrant.configure(VAGRANT_API_VERSION) do |config|
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 4096
+    v.cpus = 4
+  end
+  config.ssh.insert_key = false
+  config.vm.box = 'bento/ubuntu-16.04'
+  config.vm.network "forwarded_port", guest: 9000, host: 9000
+  config.vm.provision 'shell', inline: <<-SHELL
+    sudo apt-get update
+    sudo apt-get -y install postgresql
+    sudo -u postgres psql -f /vagrant/sonar.psql postgres
+  SHELL
+end

@@ -1,0 +1,16 @@
+---
+
+# Sonar version
+sonar_version: 6.7.3
+
+# Encryption
+sonar_secret_key: ""
+
+# Database
+sonar_jdbc_username: "sonar"
+sonar_jdbc_password: "sonar"
+sonar_jdbc_url: jdbc:postgresql://localhost/sonar
+
+# Webserver
+sonar_web_host: 0.0.0.0
+sonar_web_port: 9000

@@ -1,0 +1,55 @@
+---
+- name: Configure Sonar APT repository
+  apt_repository:
+    repo: 'deb http://downloads.sourceforge.net/project/sonar-pkg/deb binary/'
+    state: present
+    filename: sonarqube
+    update_cache: yes
+
+- name: Install Sonar
+  apt:
+    name: "sonar={{ sonar_version }}"
+    allow_unauthenticated: yes
+    state: present
+
+- name: Configure Sonar properties
+  template:
+    src: sonar.properties.j2
+    dest: /opt/sonar/conf/sonar.properties
+  notify: Restart Sonar
+
+- name: Create /opt/sonar/.sonar directory
+  file:
+    path: /opt/sonar/.sonar
+    owner: sonar
+    group: adm
+    mode: 0700
+    state: directory
+
+- name: Configure Sonar Secret Key
+  copy:
+    content: "{{ sonar_secret_key }}"
+    dest: /opt/sonar/.sonar/sonar-secret.txt
+    owner: sonar
+    group: adm
+    mode: 0400
+  notify: Restart Sonar
+
+- name: Set kernel sysctl requirements
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    sysctl_set: yes
+    state: present
+    reload: yes
+  loop:
+   - { name: vm.swappiness, value: 1 }
+   - { name: fs.file-max, value: 65536 }
+   - { name: vm.max_map_count, value: 262144 }
+
+- name: Enable and start Sonar service
+  systemd:
+    name: sonar
+    enabled: yes
+    state: started
+  notify: Wait for Sonar to come up
