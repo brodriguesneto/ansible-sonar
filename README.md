@@ -1,6 +1,9 @@
 sonar
 =====
 
+[![Build Status](https://travis-ci.org/everproven/ansible-nexus.svg?branch=master)](https://travis-ci.org/everproven/ansible-nexus)
+[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-everproven.nexus-blue.svg)](https://galaxy.ansible.com/everproven/nexus/)
+
 An Ansible role that installs and configures [SonarQube] service on Linux.
 
 Platforms
@@ -20,10 +23,10 @@ Role Variables
 
 __sonar_version__: The SonarQube version to install.
 
-__Default__: 6.7.3
+__Default__: 6.7.4
 
 ```YAML
-sonar_version: 6.7.3
+sonar_version: 6.7.4
 ```
 
 __sonar_secret_key__: The secret key to be used to remove clear passwords from settings. See <https://redirect.sonarsource.com/doc/settings-encryption.html>.
