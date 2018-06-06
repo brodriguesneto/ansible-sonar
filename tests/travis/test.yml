@@ -39,4 +39,4 @@
   hosts: containers
   become: True
   roles:
-    - role: ansible-nexus
+    - role: ansible-sonar
