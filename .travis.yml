@@ -1,0 +1,27 @@
+---
+dist: trusty
+sudo: required
+
+services:
+  - docker
+
+language: python
+python:
+  - "3.6"
+
+before_install:
+  - deactivate
+  - sudo -H pip install ansible=="2.5.4" docker-py
+
+before_script:
+  - cd tests/travis
+
+script:
+  - ansible-playbook test.yml --syntax-check
+  - ansible-playbook test.yml
+  - ansible-playbook test.yml > ansible_run.out
+  - ./idempotence.sh ansible_run.out
+
+notifications:
+  webhooks: 
+    - https://galaxy.ansible.com/api/v1/notifications/
