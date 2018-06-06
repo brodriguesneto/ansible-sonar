@@ -17,7 +17,6 @@ before_script:
   - cd tests/travis
 
 script:
-  - apt-get update --allow-unauthenticated
   - ansible-galaxy install everproven.jdk
   - ansible-playbook test.yml --syntax-check
   - ansible-playbook test.yml
