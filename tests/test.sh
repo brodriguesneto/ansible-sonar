@@ -1,20 +1,22 @@
-#!/bin/bash -eux
+#!/bin/bash
 
-# Destroy every previous vagrant box
+# Destroy every previous vagrant box(es)
 vagrant destroy -f
 
 # Create new one(s)
 vagrant up
 sleep 5
 
-# Check the role syntax correction
-ansible-playbook --syntax-check -vv test.yml
+# Check role syntax
+ansible-playbook test.yml --syntax-check
 
-# Applied the role
-ansible-playbook -vv test.yml
+# Apply role
+ansible-playbook test.yml
 
-# Verify the idempotence of the role
-ansible-playbook -vv test.yml
+# Verify idempotence
+ansible-playbook test.yml > ansible_run.out
+./idempotence.sh ansible_run.out
+rm ansible_run.out
 
-# Destroy every leaved vagrant box
+# Destroy vagrant box(es)
 vagrant destroy -f

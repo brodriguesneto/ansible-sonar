@@ -1,7 +1,7 @@
 ---
 
 # Sonar version
-sonar_version: 6.7.3
+sonar_version: 6.7.4
 
 # Encryption
 sonar_secret_key: ""

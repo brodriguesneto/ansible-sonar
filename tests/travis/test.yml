@@ -1,0 +1,42 @@
+---
+- name: Create containers inventory group
+  hosts: localhost
+  become: false
+  gather_facts: false
+  vars:
+    containers:
+      - xenial
+  tasks:
+    - name: Build docker images
+      docker_image:
+        name: "{{ item }}"
+        tag: latest
+        path: "containers/{{ item }}"
+        force: true
+      changed_when: false
+      loop: "{{ containers }}"
+
+    - name: Run docker containers
+      docker_container:
+        name: "{{ item }}"
+        image: "{{ item }}"
+        command: "/sbin/init"
+        state: started
+        privileged: true
+      loop: "{{ containers }}"
+
+    - name: Create inventory group on-the-fly
+      add_host:
+        name: "{{ item }}"
+        ansible_connection: docker
+        ansible_user: root
+        ansible_python_interpreter: python
+        groups: containers
+      changed_when: false
+      loop: "{{ containers }}"
+
+- name: Run Nexus play
+  hosts: containers
+  become: True
+  roles:
+    - role: ansible-nexus
