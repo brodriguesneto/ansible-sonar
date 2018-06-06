@@ -40,3 +40,6 @@
   become: True
   roles:
     - role: ansible-sonar
+      sonar_jdbc_username: ""
+      sonar_jdbc_password: ""
+      sonar_jdbc_url: ""
