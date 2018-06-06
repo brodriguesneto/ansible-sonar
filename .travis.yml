@@ -19,12 +19,12 @@ before_script:
 script:
   - sudo apt-get update
   - sudo apt-get -y install postgresql
-  - sudo -u postgres psql -f ../sonar.psql postgres
+  - sudo -u postgres psql -f sonar.psql postgres
   - ansible-galaxy install everproven.jdk
   - ansible-playbook test.yml --syntax-check
   - ansible-playbook test.yml
   - ansible-playbook test.yml > ansible_run.out
-  - ../idempotence.sh ansible_run.out
+  - ./idempotence.sh ansible_run.out
 
 notifications:
   webhooks: 
