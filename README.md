@@ -1,8 +1,8 @@
 sonar
 =====
 
-[![Build Status](https://travis-ci.org/everproven/ansible-nexus.svg?branch=master)](https://travis-ci.org/everproven/ansible-nexus)
-[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-everproven.nexus-blue.svg)](https://galaxy.ansible.com/everproven/nexus/)
+[![Build Status](https://travis-ci.org/everproven/ansible-sonar.svg?branch=master)](https://travis-ci.org/everproven/ansible-sonar)
+[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-everproven.sonar-blue.svg)](https://galaxy.ansible.com/everproven/sonar/)
 
 An Ansible role that installs and configures [SonarQube] service on Linux.
 
