@@ -35,7 +35,7 @@
       changed_when: false
       loop: "{{ containers }}"
 
-- name: Run Nexus play
+- name: Run sonar play
   hosts: containers
   become: True
   roles:
