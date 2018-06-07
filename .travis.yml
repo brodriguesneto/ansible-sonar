@@ -17,7 +17,7 @@ before_script:
   - cd tests/travis
 
 script:
-  - if [ -f requirements.yml ]; then "ansible-galaxy install -r requirements.yml"; fi
+  - if [ -f requirements.yml ]; then ansible-galaxy install -r requirements.yml; fi
   - ansible-playbook test.yml --syntax-check
   - ansible-playbook test.yml
   - ansible-playbook test.yml | grep -q 'changed=0.*failed=0' && (echo 'Idempotence test pass' && exit 0) || (echo 'Idempotence test fail' && exit 1)
