@@ -1,2 +1,2 @@
-src: everproven.jdk
-version: 1.0.1
+- src: everproven.jdk
+  version: 1.0.1
