@@ -14,9 +14,7 @@ ansible-playbook test.yml --syntax-check
 ansible-playbook test.yml
 
 # Verify idempotence
-ansible-playbook test.yml > ansible_run.out
-./idempotence.sh ansible_run.out
-rm ansible_run.out
+ansible-playbook test.yml | grep -q 'changed=0.*failed=0' && (echo 'Idempotence test pass' && exit 0) || (echo 'Idempotence test fail' && exit 1)
 
 # Destroy vagrant box(es)
 vagrant destroy -f

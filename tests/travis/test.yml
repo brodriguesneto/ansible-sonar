@@ -21,8 +21,12 @@
         name: "{{ item }}"
         image: "{{ item }}"
         command: "/sbin/init"
-        state: started
         privileged: true
+        exposed_ports: 
+          - 9000
+        published_ports:
+          - 9000
+        state: started
       loop: "{{ containers }}"
 
     - name: Create inventory group on-the-fly
@@ -35,7 +39,43 @@
       changed_when: false
       loop: "{{ containers }}"
 
-- name: Run sonar play
+- name: Setup PostgreSQL
+  hosts: containers
+  become: True
+  tasks:
+    - name: Install PostgreSQL and requirements
+      apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+      loop:
+        - postgresql
+        - python3-psycopg2
+
+    - name: Start PostgreSQL
+      systemd:
+        name: postgresql
+        state: started
+
+    - name: Create sonar database user
+      postgresql_user:
+        name: sonar
+        password: sonar
+        state: present 
+      become: True
+      become_user: postgres
+
+    - name: Create sonar database
+      postgresql_db:
+        name: sonar
+        owner: sonar
+        encoding: UTF-8
+        template: template0
+        state: present
+      become: True
+      become_user: postgres
+
+- name: Apply ansible-sonar role
   hosts: containers
   become: True
   roles:

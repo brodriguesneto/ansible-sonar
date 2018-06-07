@@ -2,12 +2,8 @@
 dist: trusty
 sudo: required
 
-addons:
-  postgresql: "9.4"
-
 services:
   - docker
-  - postgresql
 
 language: python
 python:
@@ -19,16 +15,12 @@ before_install:
 
 before_script:
   - cd tests/travis
-  - psql -U postgres -c "CREATE DATABASE sonar"
-  - psql -U postgres -c "CREATE USER sonar WITH PASSWORD 'sonar'"
-  - psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE sonar TO sonar"
+  - if [ -f requirements.yml ]; then "ansible-galaxy install -r requirements.yml"; fi
 
 script:
-  - ansible-galaxy install everproven.jdk
   - ansible-playbook test.yml --syntax-check
   - ansible-playbook test.yml
-  - ansible-playbook test.yml > ansible_run.out
-  - ./idempotence.sh ansible_run.out
+  - ansible-playbook test.yml | grep -q 'changed=0.*failed=0' && (echo 'Idempotence test pass' && exit 0) || (echo 'Idempotence test fail' && exit 1)
 
 notifications:
   webhooks: 
