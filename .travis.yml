@@ -18,7 +18,6 @@ before_script:
 
 script:
   - sudo apt-get update
-  - sudo apt-get -y install postgresql
   - sudo -u postgres psql -f sonar.psql postgres
   - ansible-galaxy install everproven.jdk
   - ansible-playbook test.yml --syntax-check
