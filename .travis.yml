@@ -2,8 +2,12 @@
 dist: trusty
 sudo: required
 
+addons:
+  postgresql: "9.4"
+
 services:
   - docker
+  - postgresql
 
 language: python
 python:
@@ -15,10 +19,11 @@ before_install:
 
 before_script:
   - cd tests/travis
+  - psql -U postgres -c "CREATE DATABASE sonar"
+  - psql -U postgres -c "CREATE USER sonar WITH PASSWORD 'sonar'"
+  - psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE sonar TO sonar"
 
 script:
-  - sudo apt-get update
-  - sudo -H -u postgres psql -f sonar.psql postgres
   - ansible-galaxy install everproven.jdk
   - ansible-playbook test.yml --syntax-check
   - ansible-playbook test.yml
