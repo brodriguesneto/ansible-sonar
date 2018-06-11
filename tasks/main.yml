@@ -11,6 +11,7 @@
     name: "sonar={{ sonar_version }}"
     allow_unauthenticated: yes
     state: present
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Configure Sonar properties
   template:
